@@ -85,9 +85,7 @@ def data_writer(input_dir, file_name=None):
   writer.close()
 
 if __name__ == '__main__':
-  print("Dump apple data...")
-  input_dir = 'data/apple2orange/trainA'
-  data_writer(input_dir, 'apple')
-  print("Dump orange data...")
-  input_dir = 'data/apple2orange/trainB'
-  data_writer(input_dir, 'orange')
+  input_dir = '/media/data/CycleGAN-TensorFlow/data/horse2zebra/trainA'
+  data_writer(input_dir, 'horses')
+  input_dir = '/media/data/CycleGAN-TensorFlow/data/horse2zebra/trainB'
+  data_writer(input_dir, 'zebras')

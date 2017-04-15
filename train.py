@@ -4,8 +4,8 @@ from reader import Reader
 from datetime import datetime
 import os
 
-X_TRAIN_FILE = 'data/tfrecords/apple.tfrecords'
-Y_TRAIN_FILE = 'data/tfrecords/orange.tfrecords'
+X_TRAIN_FILE = '/media/data/CycleGAN-TensorFlow/data/horse2zebra/trainA'
+Y_TRAIN_FILE = '/media/data/CycleGAN-TensorFlow/data/horse2zebra/trainB'
 
 def train():
   current_time = datetime.now().strftime("%Y%m%d-%H%M")

@@ -5,8 +5,8 @@ from reader import Reader
 from discriminator import Discriminator
 from generator import Generator
 
-X_TRAIN_FILE = 'data/tfrecords/apple.tfrecords'
-Y_TRAIN_FILE = 'data/tfrecords/orange.tfrecords'
+X_TRAIN_FILE = 'data/tfrecords/horses.tfrecords'
+Y_TRAIN_FILE = 'data/tfrecords/zebras.tfrecords'
 REAL_LABEL = 0.9
 
 class CycleGAN:
