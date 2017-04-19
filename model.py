@@ -10,9 +10,14 @@ Y_TRAIN_FILE = 'data/tfrecords/zebras.tfrecords'
 REAL_LABEL = 0.9
 
 class CycleGAN:
-  def __init__(self, batch_size=1,
-    image_size=128, use_lsgan=True,
-    lambda1=10, lambda2=10):
+
+  def __init__(self,
+               batch_size=1,
+               image_size=64,
+               add_identity_loss=False,
+               use_lsgan=False,
+               lambda1=10,
+               lambda2=10):
     """
     Args:
       lambda1: integer, forward cycle loss weight
@@ -21,6 +26,7 @@ class CycleGAN:
     """
     self.lambda1 = lambda1
     self.lambda2 = lambda2
+    self.add_identity_loss = add_identity_loss
     self.use_lsgan = use_lsgan
     use_sigmoid = not use_lsgan
 
@@ -38,7 +44,7 @@ class CycleGAN:
     x = X_reader.feed()
     y = Y_reader.feed()
 
-    cycle_loss = self.cycle_consistency_loss(self.G, self.F, x, y)
+    cycle_loss = self.cycle_consistency_loss(self.G, self.F, x, y, self.add_identity_loss)
 
     # X -> Y
     G_gan_loss = self.generator_loss(self.G, self.D_Y, x, use_lsgan=self.use_lsgan)
@@ -136,12 +142,17 @@ class CycleGAN:
       loss = -tf.reduce_mean(ops.safe_log(D(G(x)))) / 2
     return loss
 
-  def cycle_consistency_loss(self, F, G, x, y):
+  def cycle_consistency_loss(self, F, G, x, y, add_identity_loss=False):
     """ cycle consistency loss (L1 norm)
     """
     forward_loss = tf.reduce_mean(tf.abs(F(G(x))-x))
     backward_loss = tf.reduce_mean(tf.abs(G(F(y))-y))
     loss = self.lambda1*forward_loss + self.lambda2*backward_loss
+
+    if add_identity_loss:
+        identity_loss = tf.abs( F(x) - x ) + tf.abs( G(y) - y )
+        loss += identity_loss
+
     return loss
 
   def sample(self, input, G_or_F='G'):
